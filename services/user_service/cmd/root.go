@@ -7,13 +7,11 @@ import (
 	"time"
 
 	"portalit/shared/common"
-	sctx "portalit/shared/sctx"
+	"portalit/shared/sctx"
 	"portalit/shared/sctx/component/discovery/consul"
 	"portalit/shared/sctx/component/ginc"
 	smdlw "portalit/shared/sctx/component/ginc/middleware"
 	"portalit/shared/sctx/component/gormc"
-	"portalit/shared/sctx/component/grpcserverc"
-	"portalit/shared/sctx/component/tracing"
 	"portalit/shared/sctx/core"
 
 	"github.com/gin-gonic/gin"
@@ -32,8 +30,6 @@ func newServiceCtx() sctx.ServiceContext {
 		sctx.WithComponent(ginc.NewGin(common.KeyCompGIN)),
 		sctx.WithComponent(gormc.NewGormDB(common.KeyCompGorm, "")),
 		sctx.WithComponent(consul.NewConsulComponent(common.KeyCompConsul, serviceName, version, 3000)),
-		sctx.WithComponent(tracing.NewTracingClient(common.KeyCompJaeger, serviceName, version)),
-		sctx.WithComponent(grpcserverc.NewGrpcServer(common.KeyCompGrpcServer)),
 	)
 }
 
