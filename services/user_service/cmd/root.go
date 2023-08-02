@@ -8,10 +8,8 @@ import (
 
 	"portalit/shared/common"
 	"portalit/shared/sctx"
-	"portalit/shared/sctx/component/discovery/consul"
 	"portalit/shared/sctx/component/ginc"
 	smdlw "portalit/shared/sctx/component/ginc/middleware"
-	"portalit/shared/sctx/component/gormc"
 	"portalit/shared/sctx/core"
 
 	"github.com/gin-gonic/gin"
@@ -28,8 +26,6 @@ func newServiceCtx() sctx.ServiceContext {
 	return sctx.NewServiceContext(
 		sctx.WithName(serviceName),
 		sctx.WithComponent(ginc.NewGin(common.KeyCompGIN)),
-		sctx.WithComponent(gormc.NewGormDB(common.KeyCompGorm, "")),
-		sctx.WithComponent(consul.NewConsulComponent(common.KeyCompConsul, serviceName, version, 3000)),
 	)
 }
 

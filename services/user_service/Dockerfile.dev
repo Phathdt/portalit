@@ -1,9 +1,0 @@
-FROM alpine:3.16
-WORKDIR /
-RUN apk update
-COPY services/user_service/portalit ./portalit
-COPY services/user_service/run.sh .
-# COPY services/user_service/migrations ./migrations
-
-ENTRYPOINT sh run.sh
-

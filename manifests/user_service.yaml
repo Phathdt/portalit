@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  namespace: portalit
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+        - name: user-service
+          image: phathdt379/user_service:latest
+          ports:
+            - containerPort: 4000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+  namespace: portalit
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
+spec:
+  selector:
+    app: user-service
+  ports:
+    - port: 4000
+      targetPort: 4000
+---
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: route-external-user-service
+  namespace: portalit
+spec:
+  parentRefs:
+    - kind: Gateway
+      name: external-http
+      namespace: default
+  hostnames:
+    - 'user.kanesa.xyz'
+  rules:
+    - matches:
+        - path:
+            value: /
+      backendRefs:
+        - name: user-service
+          port: 4000

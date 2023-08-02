@@ -5,14 +5,4 @@ dotenv: ['.env', '{{.ENV}}/.env.', '{{.HOME}}/.env']
 tasks:
   user_service:
     cmds:
-      - cd services/user_service && GOOS=linux GARCH=amd64 CGO_ENABLED=0 go build -o portalit main.go
-      - defer: cd services/user_service && rm portalit
-      - docker-compose build user_service
-      - docker-compose up user_service
-
-  chat_migrate:
-    cmds:
-      - cd services/user_service && GOOS=linux GARCH=amd64 CGO_ENABLED=0 go build -o portalit cmd/chat_migrate/main.go
-      - defer: cd services/user_service && rm portalit
-      - docker-compose build chat_migrate
-      - docker-compose up chat_migrate
+      - docker buildx build --platform linux/amd64 -t phathdt379/user_service:latest -f services/user_service/Dockerfile .
